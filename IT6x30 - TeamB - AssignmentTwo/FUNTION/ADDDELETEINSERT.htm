@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Add Remove Select Box Fields Dynamically using jQuery Ajax in PHP</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<br />
+		<div class="container">
+			<h3 align="center"><a href="#">Add Remove Select Box Fields Dynamically using jQuery Ajax in PHP</a></h3>
+			<br />
+			<div class="row">
+				<div class="col-md-4">
+					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- webslesson_mainblogsec_Blog1_1x1_as -->
+					<ins class="adsbygoogle"
+						style="display:block"
+						data-ad-client="ca-pub-4529508631166774"
+						data-ad-host="ca-host-pub-1556223355139109"
+						data-ad-host-channel="L0007"
+						data-ad-slot="6573078845"
+						data-ad-format="auto"></ins>
+					<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+				</div>
+				<div class="col-md-8">
+					<h4 align="center">Enter Item Details</h4>
+					<br />
+					<form method="post" id="insert_form">
+						<div class="table-repsonsive">
+							<span id="error"></span>
+							<table class="table table-bordered" id="item_table">
+								<tr>
+									<th>Enter Item Name</th>
+									<th>Enter Quantity</th>
+									<th>Select Unit</th>
+									<th><button type="button" name="add" class="btn btn-success btn-sm add"><span class="glyphicon glyphicon-plus"></span></button></th>
+								</tr>
+							</table>
+							<div align="center">
+								<input type="submit" name="submit" class="btn btn-info" value="Insert" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script>
+$(document).ready(function(){
+	
+	$(document).on('click', '.add', function(){
+		var html = '';
+		html += '<tr>';
+		html += '<td><input type="text" name="item_name[]" class="form-control item_name" /></td>';
+		html += '<td><input type="text" name="item_quantity[]" class="form-control number_only item_quantity" /></td>';
+		html += '<td><select name="item_unit[]" class="form-control item_unit"><option value="">Select Unit</option><option value="Bags">Bags</option><option value="Bottles">Bottles</option><option value="Box">Box</option><option value="Dozens">Dozens</option><option value="Feet">Feet</option><option value="Gallon">Gallon</option><option value="Grams">Grams</option><option value="Inch">Inch</option><option value="Kg">Kg</option><option value="Liters">Liters</option><option value="Meter">Meter</option><option value="Nos">Nos</option><option value="Packet">Packet</option><option value="Rolls">Rolls</option></select></td>';
+		html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td></tr>';
+		$('#item_table').append(html);
+	});
+	
+	$(document).on('click', '.remove', function(){
+		$(this).closest('tr').remove();
+	});
+	
+	$('#insert_form').on('submit', function(event){
+		event.preventDefault();
+		var error = '';
+		$('.item_name').each(function(){
+			var count = 1;
+			if($(this).val() == '')
+			{
+				error += "<p>Enter Item Name at "+count+" Row</p>";
+				return false;
+			}
+			count = count + 1;
+		});
+		
+		$('.item_quantity').each(function(){
+			var count = 1;
+			if($(this).val() == '')
+			{
+				error += "<p>Enter Item Quantity at "+count+" Row</p>";
+				return false;
+			}
+			count = count + 1;
+		});
+		
+		$('.item_unit').each(function(){
+			var count = 1;
+			if($(this).val() == '')
+			{
+				error += "<p>Select Unit at "+count+" Row</p>";
+				return false;
+			}
+			count = count + 1;
+		});
+		var form_data = $(this).serialize();
+		if(error == '')
+		{
+			$.ajax({
+				url:"insert.php",
+				method:"POST",
+				data:form_data,
+				success:function(data)
+				{
+					if(data == 'ok')
+					{
+						$('#item_table').find("tr:gt(0)").remove();
+						$('#error').html('<div class="alert alert-success">Item Details Saved</div>');
+					}
+				}
+			});
+		}
+		else
+		{
+			$('#error').html('<div class="alert alert-danger">'+error+'</div>');
+		}
+	});
+	
+});
+</script>
+<script>
+$(document).ready(function(){
+$(document).on('keypress', '.number_only', function(e){
+return isNumbers(e, this);      
+});
+function isNumbers(evt, element) 
+{
+var charCode = (evt.which) ? evt.which : event.keyCode;
+if (
+(charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+(charCode < 48 || charCode > 57))
+return false;
+return true;
+}
+});
+</script>
+
+
+
+
+
